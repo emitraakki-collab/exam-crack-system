@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     // Create real Razorpay order using API credentials
     const razorpay = getRazorpay();
 
-const razorpayOrder = await razorpay.orders.create({
+    const razorpayOrder = await razorpay.orders.create({
       amount: product.price, // Amount in paise from database
       currency: 'INR',
       receipt: `receipt_${Date.now()}`,
