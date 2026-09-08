@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base Styles ─────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-dark font-sans;
+  }
+
+  /* Hindi text base styling */
+  .hindi {
+    @apply font-hindi;
+    line-height: 1.8;
+  }
+
+  /* Ensure proper Devanagari rendering */
+  h1, h2, h3, h4, h5, h6, p, span, li, a, button, label {
+    font-feature-settings: "kern" 1;
+  }
+}
+
+/* ─── Component Styles ────────────────────────────────── */
+@layer components {
+  /* Section spacing */
+  .section-padding {
+    @apply py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Container */
+  .container-main {
+    @apply max-w-container mx-auto w-full;
+  }
+
+  /* Section heading */
+  .section-heading {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-dark font-hindi text-center mb-4;
+    line-height: 1.4;
+  }
+
+  /* Card base */
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6 transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply shadow-md -translate-y-0.5;
+  }
+
+  /* CTA Button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold 
+           py-3.5 px-8 rounded-lg text-base md:text-lg
+           transition-all duration-200 
+           hover:bg-primary-600 hover:shadow-lg hover:shadow-primary/25
+           active:scale-[0.98]
+           focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2;
+    min-height: 48px;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold 
+           py-3 px-6 rounded-lg text-base border-2 border-primary
+           transition-all duration-200 
+           hover:bg-primary hover:text-white
+           active:scale-[0.98]
+           focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2;
+    min-height: 48px;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 bg-accent text-white font-bold 
+           py-4 px-10 rounded-lg text-lg
+           transition-all duration-200 
+           hover:bg-accent-600 hover:shadow-lg hover:shadow-accent/25
+           active:scale-[0.98]
+           focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2;
+    min-height: 52px;
+  }
+
+  .btn-success {
+    @apply inline-flex items-center justify-center gap-2 bg-success text-white font-bold 
+           py-4 px-10 rounded-lg text-lg
+           transition-all duration-200 
+           hover:bg-success-600 hover:shadow-lg hover:shadow-success/25
+           active:scale-[0.98]
+           focus:outline-none focus:ring-2 focus:ring-success/50 focus:ring-offset-2;
+    min-height: 52px;
+  }
+
+  /* Form input */
+  .form-input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 
+           text-dark bg-white font-hindi
+           transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+           placeholder:text-gray-400;
+    min-height: 48px;
+  }
+
+  .form-label {
+    @apply block text-sm font-semibold text-gray-700 mb-1.5 font-hindi;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-400;
+  }
+
+  /* Animate on scroll */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Utility Overrides ───────────────────────────────── */
+@layer utilities {
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Safe area padding for mobile sticky elements */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* ─── Razorpay Modal Fix ─────────────────────────────── */
+.razorpay-container {
+  z-index: 99999 !important;
+}
