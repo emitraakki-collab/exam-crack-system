@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { razorpay } from '@/lib/razorpay';
+import { getRazorpay } from '@/lib/razorpay';
 
 const createOrderSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters').max(100),
@@ -61,7 +61,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Create real Razorpay order using API credentials
-    const razorpayOrder = await razorpay.orders.create({
+    const razorpay = getRazorpay();
+
+const razorpayOrder = await razorpay.orders.create({
       amount: product.price, // Amount in paise from database
       currency: 'INR',
       receipt: `receipt_${Date.now()}`,
