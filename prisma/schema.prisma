@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  name            String
+  price           Int      // Price in paise (e.g., 9900 = ₹99)
+  originalPrice   Int?     // Original price for strikethrough display
+  fileStoragePath String   @default("exam-crack-system.pdf")
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  orders          Order[]
+}
+
+model Order {
+  id                    String        @id @default(cuid())
+  customerName          String
+  email                 String
+  mobile                String
+  productId             String
+  product               Product       @relation(fields: [productId], references: [id])
+  amount                Int           // Amount in paise
+  currency              String        @default("INR")
+  paymentStatus         String        @default("PENDING") // PENDING, PAID, FAILED
+  gatewayOrderId        String?       @unique
+  gatewayPaymentId      String?
+  gatewaySignature      String?
+  downloadToken         String?
+  downloadTokenExpiresAt DateTime?
+  createdAt             DateTime      @default(now())
+  paidAt                DateTime?
+  downloadLogs          DownloadLog[]
+}
+
+model DownloadLog {
+  id           String   @id @default(cuid())
+  orderId      String
+  order        Order    @relation(fields: [orderId], references: [id])
+  downloadedAt DateTime @default(now())
+  ipHash       String?
+}
