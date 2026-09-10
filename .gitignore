@@ -40,5 +40,5 @@ next-env.d.ts
 prisma/dev.db
 prisma/dev.db-journal
 
-# Private storage (ebook files)
-private-storage/*.pdf
+# Private storage (keep ebook files tracked for Vercel deployment)
+!private-storage/*.pdf

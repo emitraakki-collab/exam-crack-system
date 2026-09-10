@@ -62,20 +62,24 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Get file path — NEVER allow arbitrary paths
-    const fileName = order.product.fileStoragePath;
-    // Sanitize: only allow alphanumeric, dash, underscore, dot
-    if (!/^[a-zA-Z0-9._-]+$/.test(fileName)) {
-      return NextResponse.json(
-        { error: 'Invalid file configuration.' },
-        { status: 500 }
-      );
-    }
+    // Get file name with safe fallback
+    const rawFileName = order.product?.fileStoragePath || 'exam-crack-system.pdf';
+    const fileName = rawFileName.replace(/[^a-zA-Z0-9._-]/g, '') || 'exam-crack-system.pdf';
 
-    const filePath = path.join(process.cwd(), 'private-storage', fileName);
+    // Multi-candidate file path resolution (Local Dev, Next build, Vercel Serverless Function)
+    const candidatePaths = [
+      path.join(process.cwd(), 'private-storage', fileName),
+      path.resolve(process.cwd(), 'private-storage', fileName),
+      path.resolve('./private-storage', fileName),
+      path.join(__dirname, '../../../../private-storage', fileName),
+      path.join(__dirname, '../../../private-storage', fileName),
+      path.join(process.cwd(), '.next/server/private-storage', fileName),
+    ];
 
-    if (!existsSync(filePath)) {
-      console.error(`Ebook file not found: ${filePath}`);
+    const filePath = candidatePaths.find((p) => existsSync(p));
+
+    if (!filePath) {
+      console.error(`Ebook file not found. Candidate paths tried: ${candidatePaths.join(' | ')}`);
       return NextResponse.json(
         { error: 'Ebook file not found. Please contact support.' },
         { status: 404 }
